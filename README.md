@@ -5,6 +5,9 @@
 ## 下载使用(免安装,Windows 10/11 x64)
 
 1. 打开 [Releases 页面](https://github.com/ClawbertZuo/TOPPEUR/releases),下载最新版的 **TOPPEUR.exe**(约 47MB,自包含单文件,无需安装 .NET 运行时)
+
+   - **国内网络加速下载**(GitHub 直连慢时用):[加速链接](https://gh-proxy.com/https://github.com/ClawbertZuo/TOPPEUR/releases/latest/download/TOPPEUR.exe)(第三方代理,可自行选择其他 ghproxy 服务)
+
 2. 双击运行:程序进入系统托盘,启动时 logo 短暂浮现;托盘右键 → 退出
 3. 如果浏览器/Windows 提示风险(SmartScreen 拦截):点"更多信息" → "仍要运行"
 4. 使用说明:
