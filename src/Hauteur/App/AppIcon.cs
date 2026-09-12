@@ -5,7 +5,7 @@ using System.Reflection;
 namespace Hauteur.App;
 
 /// <summary>
-/// 托盘/窗口图标:从嵌入资源 Assets\NewIcon.ico 加载;
+/// 托盘/窗口图标:从嵌入资源 Assets\AppIcon.ico 加载;
 /// 资源缺失或损坏时用简单绘制的占位图标兜底,保证托盘不空白。
 /// </summary>
 internal static class AppIcon
@@ -20,7 +20,7 @@ internal static class AppIcon
         try
         {
             using var stream = Assembly.GetExecutingAssembly()
-                .GetManifestResourceStream("Hauteur.Assets.NewIcon.ico");
+                .GetManifestResourceStream("Hauteur.Assets.AppIcon.ico");
             if (stream is not null) return new Icon(stream);
         }
         catch

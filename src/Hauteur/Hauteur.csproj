@@ -8,10 +8,10 @@
     <Nullable>enable</Nullable>
     <RootNamespace>Hauteur</RootNamespace>
     <AssemblyName>Hauteur</AssemblyName>
-    <Version>0.6.0</Version>
+    <Version>0.6.1</Version>
     <Description>Hauteur 窗口层级管理工具</Description>
     <!-- 应用程序(exe)图标 -->
-    <ApplicationIcon>Assets\NewIcon.ico</ApplicationIcon>
+    <ApplicationIcon>Assets\AppIcon.ico</ApplicationIcon>
     <!-- 每显示器 V2 DPI 感知,避免多显示器/缩放错位 -->
     <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
     <!-- 仅保留简体中文卫星资源(MessageBox 按钮等),减小体积 -->
@@ -27,8 +27,8 @@
 
   <ItemGroup>
     <!-- 图标嵌入程序集,单文件发布后无需外部文件 -->
-    <EmbeddedResource Include="Assets\NewIcon.ico" />
-    <EmbeddedResource Include="Assets\NewIcon.png" />
+    <EmbeddedResource Include="Assets\AppIcon.ico" />
+    <EmbeddedResource Include="Assets\AppIcon.png" />
   </ItemGroup>
 
 </Project>
