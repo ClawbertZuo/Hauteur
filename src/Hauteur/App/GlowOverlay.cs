@@ -1,7 +1,7 @@
 using System.Runtime.InteropServices;
-using TOPPEUR.Interop;
+using Hauteur.Interop;
 
-namespace TOPPEUR.App;
+namespace Hauteur.App;
 
 /// <summary>
 /// 单个光晕覆盖窗口:比目标窗口四周各大 <see cref="GlowWidth"/> 像素,
@@ -13,7 +13,7 @@ internal sealed class GlowOverlay : IDisposable
     internal const int GlowWidth = 8;
 
     /// <summary>覆盖窗口标题,测试/排障时按此识别。</summary>
-    internal const string WindowTitle = "TOPPEUR.Glow";
+    internal const string WindowTitle = "Hauteur.Glow";
 
     private const uint SWP_NOACTIVATE = 0x0010;
 

@@ -1,8 +1,8 @@
-using TOPPEUR.Core;
-using TOPPEUR.Interop;
-using TOPPEUR.UI;
+using Hauteur.Core;
+using Hauteur.Interop;
+using Hauteur.UI;
 
-namespace TOPPEUR.App;
+namespace Hauteur.App;
 
 /// <summary>
 /// 托盘常驻上下文:程序启动后不弹主窗口,仅驻留系统托盘。
@@ -45,6 +45,7 @@ internal sealed class TrayAppContext : ApplicationContext
         _settings = ConfigStore.Load();
         _settings.LayerCount = Math.Clamp(_settings.LayerCount, 3, 9); // 防止手改配置出现非法值
         _settings.EnsureLayerColors(_settings.LayerCount);
+        StartupManager.MigrateLegacyRunKey(); // 清理旧项目名的开机自启注册表项
         _settings.AutoStart = StartupManager.IsEnabled(); // 以注册表实际状态为准
 
         _messageWindow = new MessageWindow();
@@ -138,7 +139,7 @@ internal sealed class TrayAppContext : ApplicationContext
             {
                 string labels = string.Join("、", _hotkeys.Failed.Select(f => f.Label));
                 _trayIcon.ShowBalloonTip(
-                    5000, "TOPPEUR",
+                    5000, "Hauteur",
                     $"以下热键注册失败,可能被其他程序占用:{labels}。请打开设置更换组合键。",
                     ToolTipIcon.Warning);
             }
@@ -275,9 +276,9 @@ internal sealed class TrayAppContext : ApplicationContext
     private void ShowFailureBalloon(IntPtr hwnd)
     {
         string reason = WindowOps.IsTargetProcessElevated(hwnd)
-            ? "目标窗口以管理员权限运行,当前权限的 TOPPEUR 无法调整它的层级。请以管理员身份重新启动 TOPPEUR 后重试。"
+            ? "目标窗口以管理员权限运行,当前权限的 Hauteur 无法调整它的层级。请以管理员身份重新启动 Hauteur 后重试。"
             : "层级调整未生效,目标窗口可能拒绝该操作。";
-        _trayIcon.ShowBalloonTip(5000, "TOPPEUR", reason, ToolTipIcon.Warning);
+        _trayIcon.ShowBalloonTip(5000, "Hauteur", reason, ToolTipIcon.Warning);
     }
 
     // ---- 托盘菜单 ----
@@ -310,7 +311,7 @@ internal sealed class TrayAppContext : ApplicationContext
     {
         _glow.ClearAll();
         _registry.RestoreAll();
-        _trayIcon.ShowBalloonTip(3000, "TOPPEUR", "已恢复所有窗口的原始层级。", ToolTipIcon.Info);
+        _trayIcon.ShowBalloonTip(3000, "Hauteur", "已恢复所有窗口的原始层级。", ToolTipIcon.Info);
     }
 
     private void TogglePaused(bool paused)
@@ -331,8 +332,8 @@ internal sealed class TrayAppContext : ApplicationContext
     {
         string combo = HotkeyText.Format(_settings.HotkeyModifiers, _settings.HotkeyKey);
         return _settings.Paused
-            ? "TOPPEUR — 已暂停"
-            : $"TOPPEUR — 置顶/置底 {combo} · 设层 Ctrl+Alt+1~{_settings.LayerCount}";
+            ? "Hauteur — 已暂停"
+            : $"Hauteur — 置顶/置底 {combo} · 设层 Ctrl+Alt+1~{_settings.LayerCount}";
     }
 
     // ---- 设置窗口 ----

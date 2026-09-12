@@ -1,8 +1,8 @@
 using System.Text.Json.Serialization;
 
-namespace TOPPEUR.Core;
+namespace Hauteur.Core;
 
-/// <summary>用户配置,持久化到 %APPDATA%\TOPPEUR\settings.json。</summary>
+/// <summary>用户配置,持久化到 %APPDATA%\Hauteur\settings.json。</summary>
 public sealed class AppSettings
 {
     /// <summary>置顶切换热键的修饰键(MOD_CONTROL | MOD_ALT 等)。</summary>

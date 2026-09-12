@@ -1,12 +1,12 @@
-# TOPPEUR
+# Hauteur
 
 窗口层级管理工具:全局快捷键把当前前台窗口放到桌面的指定层级,后台常驻系统托盘。
 
 ## 下载使用(免安装,Windows 10/11 x64)
 
-1. 打开 [Releases 页面](https://github.com/ClawbertZuo/TOPPEUR/releases),下载最新版的 **TOPPEUR.exe**(约 47MB,自包含单文件,无需安装 .NET 运行时)
+1. 打开 [Releases 页面](https://github.com/ClawbertZuo/Hauteur/releases),下载最新版的 **Hauteur.exe**(约 47MB,自包含单文件,无需安装 .NET 运行时)
 
-   - **国内网络加速下载**(GitHub 直连慢时用):[加速链接](https://gh-proxy.com/https://github.com/ClawbertZuo/TOPPEUR/releases/latest/download/TOPPEUR.exe)(第三方代理,可自行选择其他 ghproxy 服务)
+   - **国内网络加速下载**(GitHub 直连慢时用):[加速链接](https://gh-proxy.com/https://github.com/ClawbertZuo/Hauteur/releases/latest/download/Hauteur.exe)(第三方代理,可自行选择其他 ghproxy 服务)
 
 2. 双击运行:程序进入系统托盘,启动时 logo 短暂浮现;托盘右键 → 退出
 3. 如果浏览器/Windows 提示风险(SmartScreen 拦截):点"更多信息" → "仍要运行"
@@ -31,12 +31,12 @@
 
 - **Ctrl+Alt+T**(可自定义)**置顶 ↔ 置底**切换:未置顶时按下 = 置顶,已置顶时按下 = 垫底(`HWND_BOTTOM`,真正的最后一层)
 - **光晕显示**:被设层级的窗口边缘出现渐变光晕(8px 描边,鼠标穿透,紧贴窗口可见边界,圆角与窗口 DWM 圆角严格匹配),跟随窗口移动/缩放/最小化;光晕位于目标窗口自身的 Z 序位置,被更靠前的窗口自然遮挡;**每个层级可单独指定光晕颜色**(默认高饱和紫 #9D00FF → 粉 #FF007F 渐变),所有层级亮度一致、以颜色区分层级,颜色在设置"光晕"页可视化选择(带预览条)
-- **层级保持**(默认开启):被设过层级的窗口被点击激活时自动回到设定层级,点击不会打乱层级顺序(可在设置中关闭;仅作用于被 TOPPEUR 管理过的窗口)
+- **层级保持**(默认开启):被设过层级的窗口被点击激活时自动回到设定层级,点击不会打乱层级顺序(可在设置中关闭;仅作用于被 Hauteur 管理过的窗口)
 - **退出注销**:程序退出时自动销毁全部光晕,并把所有被调整的窗口恢复到原始层级状态(托盘"退出"、任务管理器结束任务、注销/关机都会触发)
 - 设置窗口(标签页:快捷键 / 光晕 / 常规):录制式自定义切换热键、光晕双色渐变选择器(带预览)、开机自启、暂停、层级保持开关
 - 托盘右键菜单:打开设置 / 恢复所有窗口层级 / 暂停 / 开机自启 / 退出
 - 单实例:重复启动会唤起已有实例的设置窗口
-- 配置持久化:`%APPDATA%\TOPPEUR\settings.json`,崩溃日志 `error.log`
+- 配置持久化:`%APPDATA%\Hauteur\settings.json`,崩溃日志 `error.log`
 - 热键注册冲突、目标窗口提权等异常均以气泡提示,不静默失败
 
 ## 构建与发布
@@ -44,18 +44,18 @@
 需要 .NET 10 SDK:
 
 ```powershell
-dotnet publish src/TOPPEUR -c Release
+dotnet publish src/Hauteur -c Release
 ```
 
 产物(自包含单文件,免安装,直接双击运行):
 
 ```
-src/TOPPEUR/bin/Release/net10.0-windows/win-x64/publish/TOPPEUR.exe
+src/Hauteur/bin/Release/net10.0-windows/win-x64/publish/Hauteur.exe
 ```
 
 ## 已知限制
 
 - Windows Z 序只有 置底 / 普通 / 置顶 三个带,层级 2~4 是普通带内按比例的近似位置,随桌面可见窗口数量略有浮动
 - SPEC 中的光晕显示、右键菜单层级选择尚未实现
-- 目标窗口以管理员权限运行时,普通权限的 TOPPEUR 无法调整其层级(Windows UIPI 限制),需以管理员身份运行 TOPPEUR
+- 目标窗口以管理员权限运行时,普通权限的 Hauteur 无法调整其层级(Windows UIPI 限制),需以管理员身份运行 Hauteur
 - 无代码签名,SmartScreen / 杀软可能提示

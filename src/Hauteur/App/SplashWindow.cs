@@ -2,17 +2,17 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using TOPPEUR.Interop;
+using Hauteur.Interop;
 
-namespace TOPPEUR.App;
+namespace Hauteur.App;
 
 /// <summary>
-/// 启动加载界面:logo(Assets\logo.png)以分层窗口居中浮现在主屏,
+/// 启动加载界面:图标(Assets\NewIcon.png)以分层窗口居中浮现在主屏,
 /// 鼠标穿透、不抢焦点、不占任务栏;短暂显示后平滑淡出。创建失败不影响正常启动。
 /// </summary>
 internal sealed class SplashWindow : IDisposable
 {
-    internal const string WindowTitle = "TOPPEUR.Splash";
+    internal const string WindowTitle = "Hauteur.Splash";
 
     private const int FadeStepMs = 30;
     private const uint SWP_NOACTIVATE = 0x0010;
@@ -54,12 +54,12 @@ internal sealed class SplashWindow : IDisposable
         try
         {
             using var stream = Assembly.GetExecutingAssembly()
-                .GetManifestResourceStream("TOPPEUR.Assets.logo.png");
+                .GetManifestResourceStream("Hauteur.Assets.NewIcon.png");
             if (stream is null) return null;
             using var logo = new Bitmap(stream);
 
-            // 显示宽度 480,高度按比例
-            int dw = 480, dh = Math.Max(1, (int)Math.Round(480f * logo.Height / logo.Width));
+            // 显示宽度 280,高度按比例(NewIcon 接近方形)
+            int dw = 280, dh = Math.Max(1, (int)Math.Round(280f * logo.Height / logo.Width));
             using var bmp = new Bitmap(dw, dh, PixelFormat.Format32bppArgb);
             using (var g = Graphics.FromImage(bmp))
             {

@@ -1,7 +1,7 @@
-using TOPPEUR.App;
-using TOPPEUR.Core;
+using Hauteur.App;
+using Hauteur.Core;
 
-namespace TOPPEUR.UI;
+namespace Hauteur.UI;
 
 /// <summary>设置窗口:标签页(快捷键 / 光晕 / 常规)。修改在点"保存"后才生效。</summary>
 internal sealed class SettingsForm : Form
@@ -39,7 +39,7 @@ internal sealed class SettingsForm : Form
         for (int i = 0; i < colorCount; i++)
             _layerColors[i] = Color.FromArgb(unchecked((int)(i < configured.Length ? configured[i] : defaults[i])));
 
-        Text = "TOPPEUR 设置";
+        Text = "Hauteur 设置";
         ClientSize = new Size(460, 396);
         FormBorderStyle = FormBorderStyle.FixedSingle;
         MaximizeBox = false;
@@ -223,7 +223,7 @@ internal sealed class SettingsForm : Form
 
         var versionLabel = new Label
         {
-            Text = $"TOPPEUR v{Application.ProductVersion}",
+            Text = $"Hauteur v{Application.ProductVersion}",
             Location = new Point(12, 372),
             AutoSize = true,
             ForeColor = SystemColors.GrayText,

@@ -1,6 +1,6 @@
-using TOPPEUR.Interop;
+using Hauteur.Interop;
 
-namespace TOPPEUR.App;
+namespace Hauteur.App;
 
 /// <summary>
 /// 光晕管理:为被设层级的窗口创建并维护跟随的光晕覆盖窗口(见 <see cref="GlowOverlay"/>)。

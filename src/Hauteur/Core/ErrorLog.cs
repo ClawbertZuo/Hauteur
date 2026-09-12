@@ -1,6 +1,6 @@
-namespace TOPPEUR.Core;
+namespace Hauteur.Core;
 
-/// <summary>异常日志:%APPDATA%\TOPPEUR\error.log。托盘程序无控制台,崩溃信息落盘便于排查。</summary>
+/// <summary>异常日志:%APPDATA%\Hauteur\error.log。托盘程序无控制台,崩溃信息落盘便于排查。</summary>
 internal static class ErrorLog
 {
     public static void Write(string context, Exception ex)
@@ -8,7 +8,7 @@ internal static class ErrorLog
         try
         {
             var dir = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "TOPPEUR");
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Hauteur");
             Directory.CreateDirectory(dir);
             File.AppendAllText(
                 Path.Combine(dir, "error.log"),

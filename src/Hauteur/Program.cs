@@ -1,11 +1,11 @@
-using TOPPEUR.App;
-using TOPPEUR.Core;
+using Hauteur.App;
+using Hauteur.Core;
 
-namespace TOPPEUR;
+namespace Hauteur;
 
 internal static class Program
 {
-    private const string MutexName = "TOPPEUR.SingleInstance.Mutex";
+    private const string MutexName = "Hauteur.SingleInstance.Mutex";
 
     [STAThread]
     private static void Main()
@@ -33,8 +33,8 @@ internal static class Program
         {
             ErrorLog.Write("致命错误", ex);
             MessageBox.Show(
-                $"TOPPEUR 启动失败,详情见 %APPDATA%\\TOPPEUR\\error.log:{Environment.NewLine}{ex.Message}",
-                "TOPPEUR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                $"Hauteur 启动失败,详情见 %APPDATA%\\Hauteur\\error.log:{Environment.NewLine}{ex.Message}",
+                "Hauteur", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 }

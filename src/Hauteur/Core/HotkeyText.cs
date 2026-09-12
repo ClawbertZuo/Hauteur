@@ -1,4 +1,4 @@
-namespace TOPPEUR.Core;
+namespace Hauteur.Core;
 
 /// <summary>热键组合的显示文本格式化(如 "Ctrl + Alt + T"),设置界面与托盘提示共用。</summary>
 internal static class HotkeyText

@@ -1,7 +1,7 @@
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace TOPPEUR.Interop;
+namespace Hauteur.Interop;
 
 /// <summary>本项目用到的 Win32 API 与常量(MVP 范围:置顶切换 / 全局热键 / 单实例)。</summary>
 internal static class NativeMethods

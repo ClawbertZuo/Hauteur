@@ -1,6 +1,6 @@
-using TOPPEUR.Core;
+using Hauteur.Core;
 
-namespace TOPPEUR.App;
+namespace Hauteur.App;
 
 /// <summary>隐藏的顶层消息窗口:接收 WM_HOTKEY 与单实例广播消息,驱动托盘逻辑。</summary>
 internal sealed class MessageWindow : NativeWindow
@@ -21,7 +21,7 @@ internal sealed class MessageWindow : NativeWindow
     public event Action? ShowSettingsRequested;
 
     /// <summary>消息窗口标题:排障/自动化测试按此识别。</summary>
-    internal const string WindowTitle = "TOPPEUR.MessageWindow";
+    internal const string WindowTitle = "Hauteur.MessageWindow";
 
     public MessageWindow()
     {

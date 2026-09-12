@@ -1,7 +1,7 @@
-namespace TOPPEUR.Core;
+namespace Hauteur.Core;
 
 /// <summary>
-/// 被 TOPPEUR 调整过层级的窗口记录。首次调整前快照原始状态
+/// 被 Hauteur 调整过层级的窗口记录。首次调整前快照原始状态
 /// (是否原本置顶 + Z 序中紧挨的前邻居),退出/一键恢复时还原,实现"注销层级状态";
 /// 同时保存当前应用层级(Kind/Layer),供"层级保持"功能在窗口被点击激活时拉回。
 /// </summary>

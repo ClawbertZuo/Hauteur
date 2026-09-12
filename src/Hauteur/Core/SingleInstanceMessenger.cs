@@ -1,9 +1,9 @@
-namespace TOPPEUR.Core;
+namespace Hauteur.Core;
 
 /// <summary>单实例:重复启动时,第二个实例向已有实例广播"打开设置"消息后退出。</summary>
 internal static class SingleInstanceMessenger
 {
-    private const string MessageName = "TOPPEUR.ShowSettings.v1";
+    private const string MessageName = "Hauteur.ShowSettings.v1";
 
     public static readonly int MessageId =
         unchecked((int)Interop.NativeMethods.RegisterWindowMessage(MessageName));

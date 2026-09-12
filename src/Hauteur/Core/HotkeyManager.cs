@@ -1,6 +1,6 @@
-using TOPPEUR.Interop;
+using Hauteur.Interop;
 
-namespace TOPPEUR.Core;
+namespace Hauteur.Core;
 
 /// <summary>一条热键注册项。</summary>
 internal sealed record HotkeyEntry(int Id, uint Modifiers, uint Key, string Label);

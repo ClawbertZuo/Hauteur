@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 
-namespace TOPPEUR.App;
+namespace Hauteur.App;
 
 /// <summary>光晕覆盖窗口专用的 Win32 声明(分层窗口渲染 / 窗口子类化 / WinEvent 钩子)。</summary>
 internal static class GlowInterop

@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace TOPPEUR.Core;
+namespace Hauteur.Core;
 
 /// <summary>目标窗口的 Z 序操作与过滤。</summary>
 /// <remarks>
@@ -117,7 +117,7 @@ internal static class WindowOps
         return cls is "Progman" or "WorkerW" or "Shell_TrayWnd";
     }
 
-    /// <summary>窗口是否属于本进程(TOPPEUR 自己的窗口)。</summary>
+    /// <summary>窗口是否属于本进程(Hauteur 自己的窗口)。</summary>
     public static bool IsOwnProcess(IntPtr hwnd)
     {
         Interop.NativeMethods.GetWindowThreadProcessId(hwnd, out uint pid);

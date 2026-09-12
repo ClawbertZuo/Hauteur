@@ -1,7 +1,7 @@
-using TOPPEUR.Core;
-using TOPPEUR.Interop;
+using Hauteur.Core;
+using Hauteur.Interop;
 
-namespace TOPPEUR.UI;
+namespace Hauteur.UI;
 
 /// <summary>
 /// 录制式热键输入框:获得焦点后,按下任意组合键即被记录并显示。

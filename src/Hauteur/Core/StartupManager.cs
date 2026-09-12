@@ -1,12 +1,31 @@
 using Microsoft.Win32;
 
-namespace TOPPEUR.Core;
+namespace Hauteur.Core;
 
 /// <summary>开机自启:写入/删除注册表 HKCU\...\CurrentVersion\Run,无需管理员权限。</summary>
 internal static class StartupManager
 {
     private const string RunKeyPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
-    private const string ValueName = "TOPPEUR";
+    private const string ValueName = "Hauteur";
+
+    /// <summary>清理旧项目名(TOPPEUR)的开机自启注册表项;若旧键存在,把自启意图迁移到新键(指向当前 exe)。</summary>
+    public static void MigrateLegacyRunKey()
+    {
+        try
+        {
+            using var key = Registry.CurrentUser.OpenSubKey(RunKeyPath, writable: true);
+            if (key is null) return;
+            if (key.GetValue("TOPPEUR") is not null)
+            {
+                key.SetValue(ValueName, $"\"{Application.ExecutablePath}\"");
+                key.DeleteValue("TOPPEUR", throwOnMissingValue: false);
+            }
+        }
+        catch
+        {
+            // 迁移失败忽略,不影响运行
+        }
+    }
 
     public static bool IsEnabled()
     {

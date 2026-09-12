@@ -2,10 +2,10 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Reflection;
 
-namespace TOPPEUR.App;
+namespace Hauteur.App;
 
 /// <summary>
-/// 托盘/窗口图标:从嵌入资源 Assets\logo.ico(由 logo.png 生成)加载;
+/// 托盘/窗口图标:从嵌入资源 Assets\NewIcon.ico 加载;
 /// 资源缺失或损坏时用简单绘制的占位图标兜底,保证托盘不空白。
 /// </summary>
 internal static class AppIcon
@@ -20,7 +20,7 @@ internal static class AppIcon
         try
         {
             using var stream = Assembly.GetExecutingAssembly()
-                .GetManifestResourceStream("TOPPEUR.Assets.logo.ico");
+                .GetManifestResourceStream("Hauteur.Assets.NewIcon.ico");
             if (stream is not null) return new Icon(stream);
         }
         catch
