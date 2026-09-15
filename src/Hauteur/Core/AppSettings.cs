@@ -11,6 +11,27 @@ public sealed class AppSettings
     /// <summary>置顶切换热键的主键虚拟键码(默认 T)。</summary>
     public uint HotkeyKey { get; set; } = (uint)Keys.T;
 
+    /// <summary>窗口堆叠多选热键的修饰键(按住进入多选模式,默认 Ctrl+Alt)。</summary>
+    public uint StackHotkeyModifiers { get; set; } = Interop.NativeMethods.MOD_CONTROL | Interop.NativeMethods.MOD_ALT;
+
+    /// <summary>窗口堆叠多选热键的主键虚拟键码(默认 G)。</summary>
+    public uint StackHotkeyKey { get; set; } = (uint)Keys.G;
+
+    /// <summary>取消置顶并移出窗口组热键的修饰键(默认 Ctrl+Alt)。</summary>
+    public uint DismissHotkeyModifiers { get; set; } = Interop.NativeMethods.MOD_CONTROL | Interop.NativeMethods.MOD_ALT;
+
+    /// <summary>取消置顶并移出窗口组热键的主键虚拟键码(默认 D)。</summary>
+    public uint DismissHotkeyKey { get; set; } = (uint)Keys.D;
+
+    /// <summary>默认窗口组光晕颜色:琥珀 #FFB400,与层级渐变(紫→粉)区分。</summary>
+    public const uint DefaultGroupGlowColor = 0xFFFFB400;
+
+    /// <summary>窗口组光晕颜色(ARGB):堆叠绑定的窗口常驻显示。</summary>
+    public uint GroupGlowColor { get; set; } = DefaultGroupGlowColor;
+
+    /// <summary>堆叠翻页(修饰键 + 滚轮)的修饰键,默认 Ctrl+Alt;可含鼠标侧键位。</summary>
+    public uint WheelFlipModifiers { get; set; } = Interop.NativeMethods.MOD_CONTROL | Interop.NativeMethods.MOD_ALT;
+
     /// <summary>开机自启(注册表 Run 键)。</summary>
     public bool AutoStart { get; set; }
 
@@ -20,11 +41,38 @@ public sealed class AppSettings
     /// <summary>层级数量(3~9,默认 5)。设置界面暂未提供编辑,可手改配置文件。</summary>
     public int LayerCount { get; set; } = 5;
 
+    /// <summary>各层级热键修饰键(索引 0 = 层级 1),默认全部 Ctrl+Alt。</summary>
+    public uint[]? LayerHotkeyModifiers { get; set; } = DefaultLayerHotkeyModifiers(5);
+
+    /// <summary>各层级热键主键虚拟键码(索引 0 = 层级 1),默认数字 1~N。</summary>
+    public uint[]? LayerHotkeyKeys { get; set; } = DefaultLayerHotkeyKeys(5);
+
     /// <summary>各层级光晕颜色(ARGB),索引 0 = 层级 1(置顶),默认高饱和紫 → 粉渐变。</summary>
     public uint[]? GlowLayerColors { get; set; } = DefaultLayerColors(5);
 
     /// <summary>层级保持(默认开启):被设过层级的窗口被点击激活时,自动拉回设定层级。</summary>
     public bool KeepLayers { get; set; } = true;
+
+    /// <summary>默认层级热键修饰键:全部 Ctrl+Alt。</summary>
+    public static uint[] DefaultLayerHotkeyModifiers(int count) =>
+        Enumerable.Repeat(Interop.NativeMethods.MOD_CONTROL | Interop.NativeMethods.MOD_ALT, count).ToArray();
+
+    /// <summary>默认层级热键主键:数字 1~count。</summary>
+    public static uint[] DefaultLayerHotkeyKeys(int count) =>
+        Enumerable.Range(0, count).Select(i => (uint)('1' + i)).ToArray();
+
+    /// <summary>保证层级热键数组长度与层级数一致(缺失/长度不符/主键为 0 时重置为默认)。</summary>
+    public void EnsureLayerHotkeys(int layerCount)
+    {
+        bool invalid = LayerHotkeyModifiers is null || LayerHotkeyModifiers.Length != layerCount
+            || LayerHotkeyKeys is null || LayerHotkeyKeys.Length != layerCount
+            || LayerHotkeyKeys.Any(k => k == 0);
+        if (invalid)
+        {
+            LayerHotkeyModifiers = DefaultLayerHotkeyModifiers(layerCount);
+            LayerHotkeyKeys = DefaultLayerHotkeyKeys(layerCount);
+        }
+    }
 
     /// <summary>默认层级颜色:高饱和紫 #9D00FF → 粉 #FF007F 均匀插值。</summary>
     public static uint[] DefaultLayerColors(int count)
@@ -58,9 +106,17 @@ public sealed class AppSettings
     {
         HotkeyModifiers = HotkeyModifiers,
         HotkeyKey = HotkeyKey,
+        StackHotkeyModifiers = StackHotkeyModifiers,
+        StackHotkeyKey = StackHotkeyKey,
+        DismissHotkeyModifiers = DismissHotkeyModifiers,
+        DismissHotkeyKey = DismissHotkeyKey,
+        GroupGlowColor = GroupGlowColor,
+        WheelFlipModifiers = WheelFlipModifiers,
         AutoStart = AutoStart,
         Paused = Paused,
         LayerCount = LayerCount,
+        LayerHotkeyModifiers = LayerHotkeyModifiers is null ? null : (uint[])LayerHotkeyModifiers.Clone(),
+        LayerHotkeyKeys = LayerHotkeyKeys is null ? null : (uint[])LayerHotkeyKeys.Clone(),
         GlowLayerColors = GlowLayerColors is null ? null : (uint[])GlowLayerColors.Clone(),
         KeepLayers = KeepLayers,
     };

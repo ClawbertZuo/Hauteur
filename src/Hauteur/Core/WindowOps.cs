@@ -64,11 +64,14 @@ internal static class WindowOps
         SetWindowPos(hwnd, r == 0 ? Interop.NativeMethods.HWND_TOP : normal[r - 1]);
     }
 
+    /// <summary>置顶(整组置顶等场景的原子操作)。</summary>
+    public static void SetTopmost(IntPtr hwnd) => SetWindowPos(hwnd, Interop.NativeMethods.HWND_TOPMOST);
+
     /// <summary>置顶/置底切换:未置顶 → 置顶;已置顶 → 垫底(真正的最后一层)。</summary>
     public static void ToggleTopmostBottom(IntPtr hwnd)
     {
         if (IsTopmost(hwnd)) SetBottom(hwnd);
-        else SetWindowPos(hwnd, Interop.NativeMethods.HWND_TOPMOST);
+        else SetTopmost(hwnd);
     }
 
     /// <summary>垫底:先移出置顶带(HWND_BOTTOM 不清 topmost),再放到普通带最底。</summary>

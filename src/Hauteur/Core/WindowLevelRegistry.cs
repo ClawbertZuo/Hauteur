@@ -50,6 +50,32 @@ internal sealed class WindowLevelRegistry
     public void Remove(IntPtr hwnd) => _states.Remove(hwnd);
 
     /// <summary>
+    /// 恢复单个窗口到最初层级状态并移出记录(解绑热键用):
+    /// 原本置顶的重新置顶,其余移出置顶带并尽量插回原前邻居之后。窗口未被管理时返回 false。
+    /// </summary>
+    public bool Restore(IntPtr hwnd)
+    {
+        if (!_states.Remove(hwnd, out var state)) return false;
+        if (!Interop.NativeMethods.IsWindow(hwnd)) return true;
+
+        if (state.WasTopmost)
+        {
+            SetWindowPos(hwnd, Interop.NativeMethods.HWND_TOPMOST);
+            return true;
+        }
+
+        SetWindowPos(hwnd, Interop.NativeMethods.HWND_NOTOPMOST);
+        var prev = state.PrevInsertAfter;
+        if (prev != IntPtr.Zero && prev != hwnd
+            && Interop.NativeMethods.IsWindow(prev)
+            && Interop.NativeMethods.IsWindowVisible(prev))
+        {
+            SetWindowPos(hwnd, prev);
+        }
+        return true;
+    }
+
+    /// <summary>
     /// 恢复所有窗口到最初层级状态:原本置顶的重新置顶,
     /// 其余移出置顶带并尽量插回原前邻居之后(窗口已销毁的跳过)。
     /// </summary>

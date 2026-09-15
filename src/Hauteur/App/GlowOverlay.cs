@@ -27,9 +27,12 @@ internal sealed class GlowOverlay : IDisposable
     private float _opacity;
     private int _cornerRadius = -1;
     private bool _hidden = true;
+    private readonly int _bandStart; // 环带内缘到窗口轮廓的距离:层级光晕 0,窗口组光晕为 GlowWidth(外圈,与层级光晕并存)
 
-    public GlowOverlay()
+    /// <param name="bandStart">环带内缘到窗口轮廓的距离(px),0 = 紧贴窗口边缘。</param>
+    public GlowOverlay(int bandStart = 0)
     {
+        _bandStart = bandStart;
         _wndProcDelegate = WndProcHook;
         _hwnd = GlowInterop.CreateWindowEx(
             GlowInterop.WS_EX_LAYERED | GlowInterop.WS_EX_TRANSPARENT
@@ -76,17 +79,18 @@ internal sealed class GlowOverlay : IDisposable
 
         // 每次都重新插入到目标窗口正后方(SetWindowPos 的 insertAfter=target),
         // 同时完成重定位、显示与 Z 序修正;SWP_NOACTIVATE 不抢焦点
+        int expand = _bandStart + GlowWidth;
         uint flags = SWP_NOACTIVATE;
         if (_hidden) flags |= GlowInterop.SWP_SHOWWINDOW;
         GlowInterop.SetWindowPos(
             _hwnd, target,
-            r.Left - GlowWidth, r.Top - GlowWidth, w + GlowWidth * 2, h + GlowWidth * 2,
+            r.Left - expand, r.Top - expand, w + expand * 2, h + expand * 2,
             flags);
         _hidden = false;
 
         int corner = GetCornerRadius(target);
-        int bw = w + GlowWidth * 2;
-        int bh = h + GlowWidth * 2;
+        int bw = w + expand * 2;
+        int bh = h + expand * 2;
         if (_bmpWidth != bw || _bmpHeight != bh || _argb != argb || _cornerRadius != corner || !_opacity.Equals(opacity))
             Redraw(bw, bh, argb, opacity, corner);
     }
@@ -133,10 +137,11 @@ internal sealed class GlowOverlay : IDisposable
         byte rC = (byte)(argb >> 16), gC = (byte)(argb >> 8), bC = (byte)argb;
         var pixels = new byte[w * h * 4];
 
-        // 窗口形状的圆角矩形 SDF(半宽高减去圆角半径):窗口边缘 = 距离 0,光晕环带 = 距离 [0, GlowWidth]
+        // 窗口形状的圆角矩形 SDF(半宽高减去圆角半径):窗口边缘 = 距离 0,
+        // 光晕环带 = 距离 [_bandStart, _bandStart + GlowWidth]
         float bx = w * 0.5f - cornerRadius, by = h * 0.5f - cornerRadius;
         float r = cornerRadius;
-        int edge = GlowWidth * 2; // 扫描边距:覆盖圆角区域的向外偏移(圆角 ≤ 8px + 环带 8px)
+        int edge = (_bandStart + GlowWidth) * 2; // 扫描边距:覆盖圆角区域的向外偏移(圆角 ≤ 8px + 环带)
 
         // 仅扫描边缘带(上下 edge 行整行 + 中部行左右 edge 列),其余区域必然全透明
         float centerY = h * 0.5f;
@@ -195,10 +200,10 @@ internal sealed class GlowOverlay : IDisposable
 
     /// <summary>计算一行 [x0, x1) 内的光晕像素(BGRA 预乘)。</summary>
     /// <remarks>
-    /// 环带 = 到窗口轮廓(圆角矩形,半径与 DWM 一致)的距离 ∈ [0, GlowWidth]:
-    /// 窗口边缘最亮,向外平滑渐隐;窗口内部同样有环带但被窗口自身遮挡,无需剔除。
+    /// 环带 = 到窗口轮廓(圆角矩形,半径与 DWM 一致)的距离 ∈ [bandStart, bandStart + GlowWidth]:
+    /// 环带内缘最亮,向外平滑渐隐;窗口内部同样有环带但被窗口自身遮挡,无需剔除。
     /// </remarks>
-    private static void DrawRow(
+    private void DrawRow(
         byte[] pixels, int w, int y, float py, int x0, int x1,
         float bx, float by, float r,
         byte rC, byte gC, byte bC, float opacity)
@@ -209,8 +214,8 @@ internal sealed class GlowOverlay : IDisposable
             float px = x + 0.5f - centerX;
             float dist = MathF.Abs(SdRoundRect(px, py, bx, by, r)); // 到窗口轮廓的距离
 
-            float t = dist / GlowWidth;
-            if (t >= 1f) continue;
+            float t = (dist - _bandStart) / GlowWidth;
+            if (t < 0f || t >= 1f) continue;
 
             float s = 1f - t;
             s = s * s * (3f - 2f * s); // smoothstep,渐变更柔和

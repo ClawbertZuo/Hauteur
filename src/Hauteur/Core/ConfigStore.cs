@@ -36,7 +36,9 @@ internal static class ConfigStore
             if (File.Exists(FilePath))
             {
                 var json = File.ReadAllText(FilePath);
-                return JsonSerializer.Deserialize(json, SettingsJsonContext.Default.AppSettings) ?? new AppSettings();
+                var settings = JsonSerializer.Deserialize(json, SettingsJsonContext.Default.AppSettings) ?? new AppSettings();
+                EnsureNewHotkeyDefaults(settings);
+                return settings;
             }
         }
         catch
@@ -44,6 +46,30 @@ internal static class ConfigStore
             // 配置损坏(手改/写入中断)时静默回退默认值
         }
         return new AppSettings();
+    }
+
+    /// <summary>兼容旧配置:JSON 缺少新增字段时反序列化为 0,补回默认值。
+    /// 修饰键为 0 是合法配置(F1~F24 无修饰键),不能据此重置;光晕颜色为 0 则全透明,必须补默认。</summary>
+    private static void EnsureNewHotkeyDefaults(AppSettings settings)
+    {
+        if (settings.StackHotkeyKey == 0)
+        {
+            settings.StackHotkeyModifiers = Interop.NativeMethods.MOD_CONTROL | Interop.NativeMethods.MOD_ALT;
+            settings.StackHotkeyKey = (uint)Keys.G;
+        }
+        if (settings.DismissHotkeyKey == 0)
+        {
+            settings.DismissHotkeyModifiers = Interop.NativeMethods.MOD_CONTROL | Interop.NativeMethods.MOD_ALT;
+            settings.DismissHotkeyKey = (uint)Keys.D;
+        }
+        if (settings.GroupGlowColor == 0)
+        {
+            settings.GroupGlowColor = AppSettings.DefaultGroupGlowColor;
+        }
+        if (settings.WheelFlipModifiers == 0) // 无修饰键会让每次滚轮都触发翻页,必须补默认
+        {
+            settings.WheelFlipModifiers = Interop.NativeMethods.MOD_CONTROL | Interop.NativeMethods.MOD_ALT;
+        }
     }
 
     public static void Save(AppSettings settings)

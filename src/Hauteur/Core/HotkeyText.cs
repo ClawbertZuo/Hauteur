@@ -10,6 +10,8 @@ internal static class HotkeyText
         if ((modifiers & Interop.NativeMethods.MOD_ALT) != 0) parts.Add("Alt");
         if ((modifiers & Interop.NativeMethods.MOD_SHIFT) != 0) parts.Add("Shift");
         if ((modifiers & Interop.NativeMethods.MOD_WIN) != 0) parts.Add("Win");
+        if ((modifiers & Interop.NativeMethods.MOD_XBUTTON1) != 0) parts.Add("鼠标侧键1");
+        if ((modifiers & Interop.NativeMethods.MOD_XBUTTON2) != 0) parts.Add("鼠标侧键2");
         if (key != 0) parts.Add(KeyName(key));
         return string.Join(" + ", parts);
     }
@@ -24,6 +26,7 @@ internal static class HotkeyText
             Keys.Oemcomma => ",", Keys.OemPeriod => ".", Keys.OemMinus => "-", Keys.Oemplus => "=",
             Keys.OemQuestion => "/", Keys.OemOpenBrackets => "[", Keys.OemCloseBrackets => "]",
             Keys.OemSemicolon => ";", Keys.OemQuotes => "'", Keys.Oemtilde => "`", Keys.OemBackslash => "\\",
+            Keys.XButton1 => "鼠标侧键1", Keys.XButton2 => "鼠标侧键2",
             _ => k.ToString(),
         };
     }

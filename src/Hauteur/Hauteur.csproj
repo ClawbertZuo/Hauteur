@@ -8,7 +8,7 @@
     <Nullable>enable</Nullable>
     <RootNamespace>Hauteur</RootNamespace>
     <AssemblyName>Hauteur</AssemblyName>
-    <Version>0.6.1</Version>
+    <Version>0.7.0</Version>
     <Description>Hauteur 窗口层级管理工具</Description>
     <!-- 应用程序(exe)图标 -->
     <ApplicationIcon>Assets\AppIcon.ico</ApplicationIcon>
